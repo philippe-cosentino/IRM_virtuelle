@@ -1,0 +1,307 @@
+﻿<!doctype html>
+<html>
+	<head>
+		<link rel="icon" type="image/png" href="images/favicon.png" />
+		<link rel="stylesheet" href="js/style.css">
+		<link rel="stylesheet" href="js/range-slider.css">
+		<title>IRM virtuelle</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+	</head>
+
+	<body class="unselectable" style="display:block" onkeydown="clavier(event)"> 
+		<div id="divchargement" class="chargement">
+			
+			<div id="divimagecharge" style="position:absolute;bottom:0;background-color:white;width:100vw;height:50vmin;opacity:0.1">
+				<center><img src="images/turbomedia/debutIRM.jpg" style="height:50vmin"></center>
+			</div>
+			
+			<div style="position:absolute;font-size:5vmin;width:60vw;left:20vw;padding:0;margin:0;margin-top:10vmin;text-align: center;padding-top:4vmin;padding-bottom:4vmin;z-index:10;">
+				<p>IRM virtuelle</p>
+				<p style="font-size:0.6em"><label id="labelversion"></label></p>
+				<p>CHARGEMENT EN COURS, VEUILLEZ PATIENTER</p>
+				<p><span id="spanprogression">(initialisation)</span></p>
+			</div>
+		</div>
+		
+		
+		<!-- ECRAN DES SITUATIONS -->
+				
+		<div id="divsituations" class="divcadre" style="display:none">
+			<div id="divversion1" style="position: absolute; top:0.5em;left:1em;font-size:0.5em;opacity:0.5;text-align:right"><i>v1.0 (15/04/2017)</i></div>
+			<div  id="divdivmode" style="opacity:0.75;border:solid #777 1px;font-size:0.75em;padding:0.25em;position:absolute;top:0.5em;right:1em; display: inline-block;">Mode : collège 
+				<div id="divmode" onclick="changeModeCol()" style="cursor:pointer;width:2em;border:solid #777 1px;display:inline-block;padding:0.1em;background-color:#DDD;">
+					<div  style="width:1em;background-color:#777;display:inline-block;">&nbsp;</div>
+				</div>
+			lycée</div>
+		
+			<div style="padding:1em;width:97%;text-align: center;">
+				<h1 style="text-align:center">IRM virtuelle</h1>
+				<p><b>Mise en place du protocole :</b> sélectionner les conditions pour le test <label id="labelTemoin">et le témoin </label>dans la liste ci-dessous</p>
+				<br>
+				<table style="margin-left:auto;margin-right:auto;text-align: left;">
+					<tr>
+					<td style="width:25em" >
+					<b>Conditions du test :</b>
+					</td>
+					<td style="width:25em" id="tdTemoin">
+					<b>Conditions du témoin : </b>
+					</td>
+					</tr>
+					<tr>
+					<td style="vertical-align:top;">
+						<span id="spandispotests" style="font-size:0.75em;"></span>
+					</td>
+					<td style="vertical-align:top;" id="tdTemoin2">
+						<span id="spandispotemoins" style="font-size:0.75em;"></span>
+					</td>
+					</tr>
+				</table>
+				
+				<p>&nbsp;</p>
+
+				<div id="divboutons" >
+					<div id="butlancerirm" style="position:absolute;bottom:1em;left:45%;" onclick="proposeIRM()" class="bouton">
+							Lancer l'IRM
+					</div>		
+					
+					<div id="butexpliquer" style="position:absolute;bottom:1em;left:10em;display:none" onclick="expliqueProtocole()" class="bouton">
+							Expliquer le protocole
+					</div>
+					
+					<div id="butlimites" style="position:absolute;bottom:1em;right:10em;display:block" onclick="afficheLimitesModele()" class="bouton">
+							Limites du modèle
+					</div>
+				</div>
+				
+			
+							
+			</div>
+			<div id="divauteur2" style="position: absolute; bottom:0em;right:1em;font-size:0.8em;opacity:0.5;text-align:right"><i>Auteur : P.COSENTINO</i></p></div>
+		</div>
+		
+		
+		<!-- ECRAN DU TURBOMEDIA -->
+		
+		<div id="divturbomedia" class="divcadre" style="display:none;">
+			<div id="flecheprec" onclick="imagePrecedente()" style="width:3em;position:absolute;top:50%;left:0.5em;cursor:pointer;z-index:2;">
+				<img src="images/turbomedia/arrow_LeftLight.png" style="width:100%;height:auto;"></img>
+			</div>
+			
+			<div id="flechesuiv" onclick="imageSuivante()" style="width:3em;position:absolute;top:50%;right:0.5em;cursor:pointer;z-index:2;" >
+				<img src="images/turbomedia/arrow_RightLight.png" style="width:100%;height:auto;"></img>
+			</div>
+			
+			<div style="position:absolute;left:0px;top:0px;z-index:1;">
+				<canvas id="canvturbomedia"></canvas>
+			</div>
+			
+			<div id="boutoncompris" style="position:absolute;bottom:1em;left:45%;;z-index:2;display:none" onclick="fermeProtocole()" class="bouton">
+						J'ai compris
+			</div>
+			
+			<div id="divtextebulle" class="bulle">
+				bla bla bla
+			</div>
+			
+			<div id="divauteurdessin" style="position: absolute; bottom:0.5em;right:1em;font-size:0.8em;opacity:0.5;text-align:right"><i>Auteur : P.COSENTINO</i><br><i>Dessins : G.MICHNIK</i></div>
+			
+		</div>
+		
+		<!-- ECRAN QUESTION OUI NON -->
+		
+		<div id="divquestion" class="divcadre" style="display:none;">
+			<div style="position:absolute;left:0px;top:0px;z-index:1;">
+				<canvas id="canvquestion"></canvas>
+			</div>
+			
+			<div id="divbouton1" style="position:absolute;bottom:1em;left:10em;;z-index:2;min-width:8em;" onclick="reponds1()" class="bouton">1</div>
+			<div id="divbouton2" style="position:absolute;bottom:1em;left:30em;;z-index:2;min-width:8em;" onclick="reponds2()" class="bouton">2</div>
+			<div id="divbouton3" style="position:absolute;bottom:1em;left:50em;;z-index:2;min-width:8em;" onclick="reponds3()" class="bouton">3</div>
+			
+			<div id="divtextebullequestion" class="bulle">
+				bla bla bla
+			</div>
+			
+			<div id="divauteurdessin" style="position: absolute; bottom:0.5em;right:1em;font-size:0.8em;opacity:0.5;text-align:right"><i>Auteur : P.COSENTINO</i><br><i>Dessins : G.MICHNIK</i></div>
+			
+		</div> <!-- div question -->
+		
+		<!-- ECRAN DES LIMITES DU MODELE -->
+		
+		<div id="divlimites" class="divcadre" style="display:none;">
+			<div style="width:94%;text-align: left;padding:3em;padding-top:1em;">
+				<h1 style="text-align:center">Limites du modèle utilisé dans cette application</h1>
+				
+				<p>&nbsp;</p>
+						
+				<p>Malgré les apparences, cette application ne permet pas de visualiser des IRM fonctionnelles réelles.</p>
+				
+				<p>Elle propose en revanche de <b>simuler</b> 
+				l'activité cérébrale dans différentes situations et de représenter cette activité grâce à une échelle de couleur, sur un fond d'images issues d'IRM anatomiques (bien réelles celles-ci). Il s'agit donc d'un <b>modèle</b>, d'une simplification de la réalité, reposant sur des règles abstraites.</p>
+				
+				<p>&nbsp;</p>
+				
+				<p>En "mode lycée", le modèle simule l'activité cérébrale dans chacune des situations choisies par l'utilisateur, puis calcule la différence (soustraction). C'est cette différence qui est affichée sur l'écran de visualisation.</p>
+				
+				<p>En "mode collège", le modèle est encore plus simplifié, seule est prise en compte l'unique situation choisie par l'utilisateur. Les zones mises en valeur correspondent alors à celles qui seraient davantage actives par rapport à un témoin ( = à l'obscurité, sans stimulations auditives ou tactiles, au repos ...).</p>
+				
+				<p>&nbsp;</p>
+				
+				<p>Quelques différences entre ce modèle et la réalité sont résumées dans le tableau ci-dessous :</p>
+				
+				<table>
+					<th>
+						<td><b>Mode opératoire</b></td>
+						<td><b>Mode de calcul</b></td>
+						<td><b>Mode d'affichage</b></td>
+					</th>
+					
+					<tr>
+						<td><b>IRMf réelle</b></td>
+						<td>On réalise en général un grand nombre d'enregistrements, parfois sur plusieurs individus</td>
+						<td>Un traitement statistique complexe (test de Student) est réalisé afin de comparer les enregistrements obtenus dans les 2 séries</td>
+						<td>Les couleurs correspondent à la probabilité que la différence d'activité mesurée ne soit pas due au hasard. Le seuil est de nature statistique</td>
+					</tr>
+					
+					<tr>
+						<td><b>IRMf simulée</b></td>
+						<td>Le sujet est ici unique</td>
+						<td>Une simple soustraction est réalisée entre les activités simulées dans les deux situations</td>
+						<td>Les couleurs correspondent à la valeur numérique résultant de cette soustraction.</td>
+					</tr>
+				</table>
+				
+				<div id="boutoncompris" style="position:absolute;bottom:1em;left:45%;;z-index:2;display:block" onclick="fermeLimites()" class="bouton">
+							J'ai compris
+				</div>
+			</div>
+			
+		</div>
+		
+		
+		<!-- ECRAN PRINCIPAL -->
+		
+		<div id="divecran" class="divcadre" style="display:none;">
+			<div id="divversion2" style="position: absolute; top:0.5em;left:1em;font-size:0.5em;opacity:0.5;text-align:right"><i>v1.0 (15/04/2017)</i></div>
+			<div style="float:left;width:67%;">
+			<table style="margin:1em;background-color:#AAA;">
+				<tr>
+				<td style="background-color:#A77;">
+					<div style="pointer-events: none;font-size:0.8em;color:#777;position:absolute;left:3.8em">Gauche</div>
+					<div style="pointer-events: none;font-size:0.8em;color:#777;position:absolute;left:21em">Droite</div>
+					<div id="barrecur1" class="barreascenseur"></div>
+					<div id="divcur1" onmousedown="clicAscenseur(1)" class="curascenseur"></div>
+					<canvas id="canvcoro" style="margin-left:0.5em" ></canvas>				
+				</td>
+				<td style="background-color:#7A7;">
+					<div style="pointer-events: none;font-size:0.8em;color:#777;position:absolute;left:27.2em;">Avant</div>
+					<div style="pointer-events: none;font-size:0.8em;color:#777;position:absolute;left:48em;">Arrière</div>
+					<div id="barrecur2" class="barreascenseur"></div>
+					<div id="divcur2" onmousedown="clicAscenseur(2)" class="curascenseur"></div>
+					<canvas id="canvsagi" style="margin-left:0.5em"></canvas>
+				</td>
+				</tr>
+				<tr>
+				<td style="background-color:#77A;">
+					<div style="pointer-events: none;font-size:0.8em;color:#777;position:absolute;left:3.8em">Gauche</div>
+					<div style="pointer-events: none;font-size:0.8em;color:#777;position:absolute;left:21em">Droite</div>
+					<div style="pointer-events: none;font-size:0.8em;color:#777;position:absolute;bottom:2.7em;left:12em;">Arrière</div>
+					<div id="barrecur3" class="barreascenseur"></div>
+					<div id="divcur3" onmousedown="clicAscenseur(3)" class="curascenseur"></div>
+					<canvas id="canvaxia" style="margin-left:0.5em"></canvas>
+				</td>
+				<td style="background-color:#F7F7F7;vertical-align: top;font-size:0.95em;">
+					<p><b>IRM fonctionnelle</b></p>
+					<div id="div-legende-activite">
+						<p style="padding-left:1em"><i>Augmentation relative* de l'activité cérébrale :<br><small style="font-size:0.7em">(*par rapport au témoin, valeurs et unités sont arbitraires)</small></i></p>
+					</div>
+					<canvas id="canvcoul"></canvas><br>
+					<div style="padding-left:1em;width:18em;">
+					
+					<div style="margin-left:2em;font-size:0.9em">
+					<span id="spanSeuil1">
+					<p>Seuil = <span id="spanseuil">???</span><br>
+					</span>
+					Plans de coupe : <span id="divxyz">x=?, y=?, z=?</span></p>
+					</div>
+					<hr>
+					<p><i>Protocole : </i></p>
+					<div style="margin-left:2em;font-size:0.8em;">
+						<p><i>Test : <span id="spanprotocole">????</span></i></p>
+						<p><i><span id="spanprotocolet">Témoin : ????</span></i></p>
+						<span id="spanstructure"><p><i>Structure mise en surbrillance : ????</span></i></p>
+					</div>
+					</div>
+				</td>
+				</tr>
+			</table>
+			</div>
+			
+					
+			<div id="divconsignes" style="float:left;padding:1em;width:28%" class="styled-select">
+				<p><i>Pour déplacer le plan de coupe :</i></p>
+				<div style="margin-left:2em;font-size:0.9em"><i>- cliquer et bouger la souris sur les coupes<br>ou<br>- utiliser les ascenseurs verticaux</i></div>
+				<p>&nbsp;</p>
+				
+				<!-- range du seuil -->
+				<div id="divSeuil" style="display: inline-block;white-space: nowrap;width:100%;">
+					<div style="width:6em;float:left;">Réglage du seuil :</div>
+					<div style="float:right;width:11em;height:1em" class="range-slider" id="range-slider-2"><span></span></div>
+				</div>
+				
+				
+				<p><i>Structure mise en surbrillance :</i></p>
+				<div style="margin-left:2em;width:10em;" >
+				<select id="selectstruct" onchange="changeStruct(this.value)" style="width:100%" >	</select>
+				</div>
+							
+				<div id="divPanneauStructures" style="display:none;">
+					<p><i>Opacité et mode de surbrillance: </i></p>
+
+					<!-- range opacité et liste déroulante modes -->
+					<div id="divSeuil" style="display: inline-block;white-space: nowrap;width:100%;">
+						<div style="width:6em;float:left;">
+							<select id="selectmode" onchange="changeMode(this.value)" style="width:100%">
+							<option value="multiply">Multiplication</option>
+							<option value="soft-light" selected>Lumière douce</option>
+							<option value="hard-light">Lumière dure</option>
+							<option value="lighter">Plus clair</option>
+							</select>
+						</div>
+						<div style="float:right;width:11em;height:1em" class="range-slider" id="range-slider-1"><span></span></div>
+					</div>
+									
+				</div>
+				
+				<div id="panneauDessin" style="display:none";>
+				<p>Efface : <input type="checkbox" id="checkefface" unchecked onchange="clicCheckEfface(this.checked)"> Bucket : <input type="checkbox" checked onchange="clicCheckBucket(this.checked)"> Plat : <input type="checkbox" checked onchange="clicCheckPlat(this.checked)"></p>
+				<p>Taille Brosse :<br>
+				<input id="rangebrosse" type="range" min=1 max=40 value=15 oninput="changeTailleBrosse(this.value)" style="width:30%;cursor:pointer">
+				<svg id="svgbrosse" height="50px" width="50px">
+				  <circle cx="50%" cy="50%" r="50%"  fill="red" />
+				</svg></p>
+				</div>
+				
+				<p>&nbsp;</p>
+				
+				<div id="divgl" style="position:absolute;background-color:red;cursor:not-allowed;">
+					<div id="div_image_tete_3D" style="height:100%;display:none;">
+						<img src="images/tete3D.png" height="100%" class="unselectable" style="pointer-events:none">
+					</div>
+				</div>
+				
+				<div class="bouton" style="position:absolute;bottom:1.8em;right:6.2em" onclick="goDivSituations()">Revenir sur les protocoles</div>
+				
+				<div id="divauteur" style="position: absolute; bottom:0.5em;right:1em;font-size:0.8em;opacity:0.5;text-align:right"><i>Auteur : P.COSENTINO</i></div>
+			
+		</div> <!-- divconsignes -->
+	
+		<script src="js/init.js"></script>
+
+		<script>
+			window.onload=function() {go();}
+		</script>
+
+	</body>
+</html>
